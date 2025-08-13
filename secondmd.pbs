@@ -1,0 +1,16 @@
+#PBS -N PP_18C_MS16ns
+#PBS -j oe
+#PBS -m abe
+#PBS -M gfm12@case.edu
+#PBS -l walltime=72:00:00
+#PBS -l nodes=4:ppn=12
+#PBS -S /bin/bash
+set -vx
+module load gromacs
+cd $PBS_O_WORKDIR
+pbsdcp -s md.mdp EtOHMix50_PP24_MD1.pdb PP_24C.top PP24.itp ethanol.top $TMPDIR
+cd $TMPDIR
+grompp -f md2.mdp -c EtOHMix50_PP24_MD1.pdb -p PP_24C.top -o md2.tpr -maxwarn 7000
+mpiexec mdrun_mpi -v -s md2.tpr -o secondmd.trr -c EtOHMix50_PP24_MD2.pdb -g secondmd.log -e secondmd.edr -maxh 72
+pbsdcp -g md2.tpr secondmd.trr EtOHMix50_PP24_MD2.pdb secondmd.log secondmd.edr $PBS_O_WORKDIR/
+

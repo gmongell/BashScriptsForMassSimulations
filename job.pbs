@@ -1,0 +1,39 @@
+>#!/bin/bash 
+#PBS -V
+
+### Job name
+#PBS -N lumExp
+#PBS -l walltime=02:00:00
+#PBS -l nodes=8:ppn=8
+#PBS -j oe
+#PBS -S /bin/bash
+#PBS -N test
+#PBS -m e
+
+
+
+
+## load modules for MD simulations
+module load fftw3
+module load gromacs-4.5.5
+PBS_O_WORKDIR=/nfs/01/cwr0351/test
+cd $PBS_O_WORKDIR
+
+
+
+
+ ## copy files to the temporary folders
+ pbsdcp *.* $TMPDIR
+ cd $TMPDIR
+
+
+
+
+ ## run gromacs command for MD
+ grompp -f grompp.mdp -p topol.top -n index.ndx -c cg192x50a_NVT_503_md65.em.gro
+ mdrun -s topol.tpr
+
+
+
+ ## copy back files to the local directory
+ pbsdcp -g ener.edr md.log traj.xtc state.cpt state_prev.cpt traj.trr $PBS_O_WORKDIR

@@ -1,0 +1,26 @@
+# Glenn example batch script.
+# see fwspider_tutor.pdf
+# Everything else done prior to this
+# because queue resources are not required
+# negligible 
+#PBS -N wet_LargeBox
+#PBS -j oe
+#PBS -m ae
+#PBS -M gfm12@case.edu
+#PBS -l walltime=01:00:00
+#PBS -l nodes=2:ppn=8
+#PBS -S /bin/bash
+set -vx
+# loading the modules
+module load fftw3
+module load gromacs-4.5.5
+# copying all files to nodes
+pbsdcp *.* $TMPDIR
+cd $TMPDIR
+# PBS_O_WORKDIR refers to the directory from which the job was submitted.
+cd $PBS_O_WORKDIR
+# running the molecular dynamics
+mpiexec mdrun_mpi -rdd 2.0 -s fws_em2.tpr -o fws_em.trr -c fws_b4pr.pdb -e em.edr -g em.log
+# copying files back
+pbsdcp -g fws_em.trr fws_b4pr.pdb em.edr em.log $PBS_O_WORKDIR
+ls -al

@@ -1,0 +1,18 @@
+#PBS -N PE_10C_MS8ns
+#PBS -j oe
+#PBS -m abe
+#PBS -M gfm12@case.edu
+#PBS -l walltime=24:00:00
+#PBS -l nodes=1:ppn=12
+#PBS -S /bin/bash
+set -vx
+
+X=Et
+C=80
+module load gromacs/4.6.3
+for i in PE4 PE5 PE6 PE8 PE10 PE12 PE14 PE18 PE24 PP6 PP9 PP12 PP15 PP18 PIB12 PIB24 PIB36
+do 
+cd /fs/lustre/cwr0408/1.29.2014/$i
+echo -e "6\n1" | g_rdf -f md_concat.trr -s md1.tpr -o $X\OHMix$C\_$i\_rdf_HOH.xvg -com
+echo -e "6\n5" | g_rdf -f md_concat.trr -s md1.tpr -o $X\OHMix$C\_$i\_rdf_$C\OH.xvg -com
+done

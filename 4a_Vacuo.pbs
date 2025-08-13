@@ -1,0 +1,37 @@
+
+
+
+#PBS -N GroAndRhoGen
+#PBS -j oe
+#PBS -m ae
+#PBS -M gfm12@case.edu
+#PBS -l walltime=01:00:00
+#PBS -l nodes=2:ppn=8
+#PBS -S /bin/bash
+set -vx
+
+# loading the modules
+module load fftw3
+module load gromacs-4.5.5
+
+
+# compute density
+echo 0 | g_density -f []md_out.trr -s []fws_md.tpr -o []density.xvg
+
+echo 0 | g_density -f md_out.trr -s fws_md.tpr -o density.xvg
+
+
+# generate the .gro
+echo 0 | trjconv -f []md_out.trr -s mixture13.pdb -o md_out.gro
+
+
+# compute the surface parameter
+# pass the filename as a variable into the surface parameter code
+# by rewriting the file with a perl or pbs command
+# OR.
+# rewrite the surface parameter code to accept a flag with the filename
+# as a variable. organize the filenames to be numbers between 1 and nmax (180?)
+# then have the program rewrite the input.gro and output.bin, recompile, execute
+# you will have to put in the number of frames to calculate based upon the simulation time
+
+

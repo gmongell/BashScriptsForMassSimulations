@@ -1,0 +1,35 @@
+# Glenn example batch script.
+# see fwspider_tutor.pdf
+# Everything else done prior to this
+# because queue resources are not required
+# negligible 
+#PBS -N wet_LargeBox
+#PBS -j oe
+#PBS -m ae
+#PBS -M gfm12@case.edu
+#PBS -l walltime=01:00:00
+#PBS -l nodes=2:ppn=8
+#PBS -S /bin/bash
+set -vx
+# loading the modules
+module load fftw3
+module load gromacs-4.5.5
+
+# load the gnu plot module
+# note that the gnuplot module is only
+# available on Glenn
+module load gnuplot-4.2.4
+gnuplot
+
+# sample plotting code
+
+
+# utilize gnuplot or grace to plot each of the data files
+
+
+
+
+# delete the .gro and .trr since the storage limit
+# does not allow for 1500 multi-GB files (1TB max)
+
+rm [].trr [].gro

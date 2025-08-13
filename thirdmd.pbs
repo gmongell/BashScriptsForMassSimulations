@@ -1,0 +1,18 @@
+#PBS -N PP_18C_MS16ns
+#PBS -j oe
+#PBS -m abe
+#PBS -M gfm12@case.edu
+#PBS -l walltime=72:00:00
+#PBS -l nodes=4:ppn=12
+#PBS -S /bin/bash
+set -vx
+module load gromacs
+cd $PBS_O_WORKDIR
+pbsdcp -s md.mdp EtOHMix50_PP24_MD2.pdb PP_24C.top PP24.itp ethanol.top $TMPDIR
+cd $TMPDIR
+grompp -f md3.mdp -c EtOHMix50_PP24_MD2.pdb -p PP_24C.top -o md3.tpr -maxwarn 7000
+mpiexec mdrun_mpi -v -s md3.tpr -o thirdmd.trr -c EtOHMix50_PP24_MD3.gro -g thirdmd.log -e thirdmd.edr -maxh 72
+pbsdcp -g md3.tpr thirdmd.trr EtOHMix50_PP24_MD3.pdb thirdmd.log thirdmd.edr $PBS_O_WORKDIR/
+cd $PBS_O_WORKDIR
+trjcat -settime yes -f EtOHMix50_PP24_md1.trr EtOHMix50_PP24C_md3.trr EtOHMix50_PP24C_md3.trr -o md_concat.trr
+echo 0 | trjconv -f EtOHMix50_PP24C_md3.trr -s EtOHMix50_PP24_MD3.gro -o md_out.gro

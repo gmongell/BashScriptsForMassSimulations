@@ -1,0 +1,20 @@
+#PBS -N TrjconvAll
+#PBS -j oe
+#PBS -m e
+#PBS -M youremail@R1UNI.edu
+#PBS -l walltime=24:00:00
+#PBS -l nodes=1:ppn=12
+#PBS -S /bin/bash
+set -vx
+module load gromacs
+cd /fs/lustre/cwr0408/
+for l in EtOHMix50 EtOHMix00 EtOHMix70 EtOHMix100 EtOHMix80
+do
+cd /fs/lustre/cwr0408/$l
+for dir in */
+do
+cd /fs/lustre/cwr0408/$l/$dir
+echo 0 | trjconv -f md_concat.trr -s $l\_$dir\_EM.gro -o md_out.gro
+echo $dir | ./AnalyzeGro4
+done
+done

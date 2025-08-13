@@ -1,0 +1,31 @@
+
+#PBS -l walltime=1:00:00
+#PBS -l nodes=8:ppn=8
+#PBS -j oe
+#PBS -S /bin/bash
+#PBS -N test
+#PBS -m e
+
+### Mail to user
+#PBS -m ae
+### Mail address for user
+#PBS -M gfm12@case.edu 
+
+## load modules for MD simulations
+module load intel-compilers-10.0
+module load intelmpi
+module load intel-mpi-3.2.2p-006
+module swap mvapich2 intelmpi
+PBS_O_WORKDIR=/nfs/05/cwr0408/
+;cd $PBS_O_WORKDIR
+
+## copy files to the temporary folders
+;pbsdcp a.out $TMPDIR
+;cd $TMPDIR
+
+## run gromacs command Fortran
+mpiexec a.out
+
+## copy back files to the local directory
+;pbsdcp -g '*' $PBS_O_WORKDIR
+cd $PBS_O_WORKDIR

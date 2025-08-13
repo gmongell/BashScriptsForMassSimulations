@@ -1,0 +1,23 @@
+#PBS -N copeForPolyEthersFolders
+#PBS -j oe
+#PBS -m abe
+#PBS -M gfm12@case.edu
+#PBS -l walltime=24:00:00
+#PBS -l nodes=1:ppn=12
+#PBS -S /bin/bash
+set -vx
+cp -r /fs/lustre/cwr0408/9.5.2012/PE6/ /fs/lustre/cwr0408/1.29.2014/*
+cp -r /fs/lustre/cwr0408/9.5.2012/PP6/ /fs/lustre/cwr0408/1.29.2014/*
+cp -r /fs/lustre/cwr0408/9.5.2012/PIB12/ /fs/lustre/cwr0408/1.29.2014/*
+cp -r /fs/lustre/cwr0408/9.5.2012/PIB24/ /fs/lustre/cwr0408/1.29.2014/*
+cp -r /fs/lustre/cwr0408/9.5.2012/PIB36/ /fs/lustre/cwr0408/1.29.2014/*
+cp -r /fs/lustre/cwr0408/9.5.2012/PE24/ /fs/lustre/cwr0408/1.29.2014/*
+cp -r /fs/lustre/cwr0408/9.5.2012/PP24/ /fs/lustre/cwr0408/1.29.2014/*
+cp -r /fs/lustre/cwr0408/9.5.2012/PE18/ /fs/lustre/cwr0408/1.29.2014/*
+cp -r /fs/lustre/cwr0408/9.5.2012/PP18/ /fs/lustre/cwr0408/1.29.2014/*
+cp -r /fs/lustre/cwr0408/9.5.2012/PE14/ /fs/lustre/cwr0408/1.29.2014/*
+cp -r /fs/lustre/cwr0408/9.5.2012/PP9/ /fs/lustre/cwr0408/1.29.2014/*
+cp -r /fs/lustre/cwr0408/9.5.2012/PP15/ /fs/lustre/cwr0408/1.29.2014/*
+cp -r /fs/lustre/cwr0408/9.5.2012/PE5/ /fs/lustre/cwr0408/1.29.2014/*
+cp -r /fs/lustre/cwr0408/9.5.2012/PP12/ /fs/lustre/cwr0408/1.29.2014/*
+cp -r /fs/lustre/cwr0408/9.5.2012/PE10/ /fs/lustre/cwr0408/1.29.2014/*

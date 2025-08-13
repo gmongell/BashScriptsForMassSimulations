@@ -1,0 +1,24 @@
+#PBS -N CreatingTARBackups
+#PBS -j oe
+#PBS -m e
+#PBS -M gfm12@case.edu
+#PBS -l walltime=24:00:00
+#PBS -l nodes=1:ppn=12
+#PBS -S /bin/bash
+set -vx
+
+#The purpose of this script it to create tar files for each of the main alcohol
+#content folders in the scratch space.  One of these copies then goes to my personal
+#laptop as a backup and another onto the lab desktop.
+cd /fs/lustre/cwr0408/
+tar -cvf EtOHMix100_8.10.2014.tar.gz ./EtOHMix100
+tar -cvf EtOHMix90_8.10.2014.tar.gz ./EtOHMix90
+tar -cvf EtOHMix80_8.10.2014.tar.gz ./EtOHMix80
+tar -cvf EtOHMix70_8.10.2014.tar.gz ./EtOHMix70
+tar -cvf EtOHMix60_8.10.2014.tar.gz ./EtOHMix60
+tar -cvf EtOHMix50_8.10.2014.tar.gz ./EtOHMix50
+tar -cvf EtOHMix40_8.10.2014.tar.gz ./EtOHMix40
+tar -cvf EtOHMix30_8.10.2014.tar.gz ./EtOHMix30
+tar -cvf EtOHMix20_8.10.2014.tar.gz ./EtOHMix20
+tar -cvf EtOHMix10_8.10.2014.tar.gz ./EtOHMix10
+tar -cvf EtOHMix00_8.10.2014.tar.gz ./EtOHMix00

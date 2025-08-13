@@ -1,0 +1,24 @@
+# Glenn example batch script.
+# see fwspider_tutor.pdf
+# Everything else done prior to this
+# because queue resources are not required
+# negligible 
+#PBS -N PP_18C_4n2gp
+#PBS -j oe
+#PBS -m abe
+#PBS -M gfm12@case.edu
+#PBS -l walltime=00:30:00
+#PBS -l nodes=4:ppn=12:gpus=2
+#PBS -S /bin/bash
+set -vx
+module load fftw3
+module load gromacs-4.5.5
+# PBS_O_WORKDIR refers to the directory from which the job was submitted.
+cd $PBS_O_WORKDIR
+pbsdcp -s fws_md.tpr $TMPDIR
+# Use TMPDIR for best performance.
+cd $TMPDIR
+FILENAM=4n2g
+mpiexec mdrun_mpi -s fws_md.tpr -o md_$FILENAM.trr -c md_$FILENAM.pdb -g md_$FILENAM.log -e md_$FILENAM.edr
+cat md.log
+pbsdcp -g md_$FILENAM.trr md_$FILENAM.pdb md_$FILENAM.log md_$FILENAM.edr $PBS_O_WORKDIR/

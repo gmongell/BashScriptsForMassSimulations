@@ -1,0 +1,37 @@
+#!/bin/bash
+
+#PBS -V
+
+### Job name
+#PBS -N lumExp
+
+### Output files
+#PBS -o lumResults.log
+#PBS -j oe
+
+### Mail to user
+#PBS -m ae
+### Mail address for user
+#PBS -M mongelli@che.rochester.edu 
+
+### Request nodes : NOTE This is REQUIRED
+#PBS -l nodes=1:ppn=8
+#PBS -l vmem=25000mb
+#PBS -l pvmem=-1
+#PBS -l walltime=12:00:00
+
+### Queue name
+#PBS -q highmem
+
+
+# This job's working directory
+echo Working directory is $PBS_O_WORKDIR
+cd $PBS_O_WORKDIR
+echo Running on host `hostname`
+echo Time is `date`
+
+
+# Run the executable
+/usr/local/lumerical/current/mpich2/nemesis/bin/mpiexec.hydra -n 8 /usr/local/lumerical/current/bin/fdtd-engine-mpich2nem  /scratch/gmongell/Lumerical_files/Scattering_layers_Only/Ellipsoid_with_injected_wave/Ellipsoid_100_200_PoW_MeshAcc8_withtransmission_500ptLambda.fsp
+#> /local_scratch/$PBS_JOBID/output
+#cp -a /local_scratch/$PBS_JOBID/scratch/gmongell/job_outputs

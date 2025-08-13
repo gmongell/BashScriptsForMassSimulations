@@ -1,0 +1,49 @@
+# Glenn example batch script.
+
+
+#note that in the jo requirements you can call multiple nodes
+#as you are likely aware, the number of nodes you call and the
+#tmie you call them for is weighted into determining how long it will take
+#for your job to start
+#additionally the max value of ppn on Glenn is 8 and on Oakley is 12.
+
+
+#PBS -N PP_18C_MS
+#PBS -j oe
+#PBS -m abe
+#PBS -M gfm12@case.edu
+#PBS -l walltime=24:00:00
+#PBS -l nodes=8:ppn=8
+#PBS -S /bin/bash
+set -vx
+
+
+module load gromacs-4.5.5
+
+# PBS_O_WORKDIR refers to the directory from which the job was submitted.
+cd $PBS_O_WORKDIR
+
+#The pbsdcp command allows the files in the working directory to be copied to all of
+#the multiple nodes in your job.  This acts as a start point for the simulations.
+#The -s flag denotes "scatter"
+#Typically for an mdrun in which the grompp step has already been completed 
+pbsdcp -s fws_md.tpr $TMPDIR
+
+# Use TMPDIR for best performance.
+cd $TMPDIR
+
+#This command is like mdrun except that it has a special program overlaid on it
+#to communicate which nodes are responsible for your job and to send information
+#between them.
+
+mpiexec mdrun_mpi -s fws_md.tpr -o md.trr -c fws_md.pdb -g md.log -e md.edr
+
+#This command creates a log so that you can check and see where any errors are coming
+#from
+
+cat md.log
+
+#This copies the modified files back from each of the nodes
+#The -g flag stands for gather.
+
+pbsdcp -g fws_md.pdb md.log md.edr $PBS_O_WORKDIR/

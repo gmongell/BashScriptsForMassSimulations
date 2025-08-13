@@ -1,0 +1,136 @@
+# Glenn example batch script.
+# see fwspider_tutor.pdf
+# Everything else done prior to this
+# because queue resources are not required
+# negligible 
+#PBS -N wet_LargeBox
+#PBS -j oe
+#PBS -m ae
+#PBS -M gfm12@case.edu
+#PBS -l walltime=01:00:00
+#PBS -l nodes=2:ppn=8
+#PBS -S /bin/bash
+set -vx
+# loading the modules
+module load fftw3
+module load gromacs-4.5.5
+
+#create a variable that will impose an upper limit on the total number of simulations
+#this variable may simply be implied by the upper limit on the filename variable
+
+# create a variable that represents the alcohol content vary from 0 to 100
+# where each increment of ten percent will increase the number of molecules
+# of alcohol
+
+for ((i=0; i<= 10; i++)
+do
+           export i=$i
+done
+
+
+#have three  packmol configuration files ready 
+#one for 0% alcohol content
+#one for alcohol content between 10% and 90% (for each alcohol)
+#one for 100% alcohol content
+
+#create a variable that keeps track of the polymer
+#j should be rewritten in each packmol script
+#j is an integer
+for ((j=1; j<= 6; j++)
+do
+           export j=$i
+done
+
+#j=1,2,3,4,5,6
+#j=1->PE12
+#j=2->PE18
+#j=3->PIB24
+#j=4->PP15
+#j=5->PP18C
+#j=6->PP24C
+
+# tricky part. the number of molecules increase 
+# corresponsponding to alcohol content will differ for each alcohol
+# therefore have a case for each alcohol
+
+#create a variable that keeps track of which alcohol
+for ((k=0; k<= 10; k++)
+do
+           export k=$i
+done
+
+#k=1->EtOH
+#k=2->MeOH
+#k=3->2POH
+
+#each alcohol has a certain number of molecules added
+#to the system for every 10 mass percent for a fixed
+#number of water molecules.
+#What if s is not an integer?? Roundup/down function??
+
+
+if k=1, s=
+if k=2, s=
+if k=3, s=
+
+#pbs does not do floor or ceiling functions, so use on s
+#python -c "from math import ceil; print ceil($NUMBER)"
+#perl -w -e "use POSIX; print ceil($NUMBER), qq{\n}"
+
+#the alcohol content and water content also appears in the
+#topology file which must be edited for each case as well
+#otherwise have several separate tology files pre-made
+
+#filename variable (string)
+l=$k_$j_$i
+Is this an onto and one-to-one mapping?
+
+#number of molecules
+mol=10*s*i
+
+#use a perl script to edit the packmol configuration file in two of four places
+#note that i=0 and i=100 are special cases which will require a separate
+#packmol input file and number of molecules of alcohol
+
+#will need to make packmol before running the packmol scripts
+#can do manually but in script preferred
+
+#first to change the name of the output file
+
+#second to change the alcohol content
+
+#third to change the alcohol
+
+#fourth to change the polymer name
+
+#the filenames would need to be a function of all four of these variables
+
+# ovverrite the first three lines of the pdb to create the box
+
+#
+#
+#
+# run packmol# the old program for an md run
+
+
+#the code to submit a script after another script
+#perhaps call the second at the end of the first
+#the third at the end of the second and so on
+#or put them all into one large file
+
+
+
+# copying all files to nodes
+pbsdcp *.* $TMPDIR
+
+cd $TMPDIR
+# PBS_O_WORKDIR refers to the directory from which the job was submitted.
+
+cd $PBS_O_WORKDIR
+
+# running the molecular dynamics
+mpiexec mdrun_mpi -rdd 2.0 -s fws_em2.tpr -o fws_em.trr -c fws_b4pr.pdb -e em.edr -g em.log
+
+# copying files back
+pbsdcp -g fws_em.trr fws_b4pr.pdb em.edr em.log $PBS_O_WORKDIR
+ls -al
